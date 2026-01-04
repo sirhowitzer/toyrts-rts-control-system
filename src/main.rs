@@ -23,6 +23,12 @@ fn main() {
         .run();
 }
 
+
+
+#[derive(Component)]
+struct SelectionBox{
+}
+
 fn str_game_init(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
@@ -36,13 +42,22 @@ fn str_game_init(
     ));
     const CIRCLE_COLOR: bevy::prelude::Color = Color::hsl(0.0, 0.0, 1.0);
     commands.spawn((
+        SelectionBox,
         Mesh2d(shape),
         MeshMaterial2d(materials.add(CIRCLE_COLOR)),
         Transform::from_xyz(0., 0., 0.),
     ));
 }
 
-fn udt_rts_controlling_system(mut commands: Commands, buttons: Res<ButtonInput<MouseButton>>, window: Single<&Window>, camera_query: Single<(&Camera, &GlobalTransform)>){
+
+
+fn udt_rts_controlling_system(
+    mut commands: Commands,
+    buttons: Res<ButtonInput<MouseButton>>, 
+    window: Single<&Window>, 
+    camera_query: Single<(&Camera, &GlobalTransform)>
+    mut selection_box_x_query: Query<(&mut Transform, &mut SelectionBox)>,
+){
     if buttons.pressed(MouseButton::Left) {
         println!("DRAGGING");
 
